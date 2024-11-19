@@ -47,6 +47,8 @@ class _ExamplePageState extends State<Example> {
                 numberOfCardsDisplayed: 3,
                 backCardOffset: const Offset(40, 40),
                 padding: const EdgeInsets.all(24.0),
+                updateOffsetHorizontal: (horizontalOffsetPercentage) =>
+                    print(horizontalOffsetPercentage),
                 cardBuilder: (
                   context,
                   index,

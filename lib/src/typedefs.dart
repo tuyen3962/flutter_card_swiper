@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/direction/card_swiper_direction.dart';
 
@@ -34,4 +35,12 @@ typedef CardSwiperOnUndo = bool Function(
   int? previousIndex,
   int currentIndex,
   CardSwiperDirection direction,
+);
+
+typedef CardSwiperUpdateOffsetHorizontal = void Function(
+  double horizontalOffsetPercentage,
+);
+
+typedef CardSwiperUpdateOffsetVertical = void Function(
+  double verticalOffsetPercentage,
 );

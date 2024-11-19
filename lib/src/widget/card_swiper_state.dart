@@ -44,6 +44,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       initialScale: widget.scale,
       allowedSwipeDirection: widget.allowedSwipeDirection,
       initialOffset: widget.backCardOffset,
+      updateOffsetHorizontal: widget.updateOffsetHorizontal,
+      updateOffsetVertical: widget.updateOffsetVertical,
       onSwipeDirectionChanged: onSwipeDirectionChanged,
     );
   }
@@ -129,6 +131,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
           if (!widget.isDisabled) {
             setState(
               () => _cardAnimation.update(
+                constraints,
                 tapInfo.delta.dx,
                 tapInfo.delta.dy,
                 _tappedOnTop,
@@ -170,7 +173,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   void _animationListener() {
     if (_animationController.status == AnimationStatus.forward) {
-      setState(_cardAnimation.sync);
+      setState(() => _cardAnimation.sync(context));
     }
   }
 

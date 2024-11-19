@@ -122,6 +122,10 @@ class CardSwiper extends StatefulWidget {
   /// Must be a positive value. Defaults to Offset(0, 40).
   final Offset backCardOffset;
 
+  final CardSwiperUpdateOffsetHorizontal? updateOffsetHorizontal;
+
+  final CardSwiperUpdateOffsetVertical? updateOffsetVertical;
+
   const CardSwiper({
     required this.cardBuilder,
     required this.cardsCount,
@@ -143,6 +147,8 @@ class CardSwiper extends StatefulWidget {
     this.onUndo,
     this.backCardOffset = const Offset(0, 40),
     super.key,
+    this.updateOffsetHorizontal,
+    this.updateOffsetVertical,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',

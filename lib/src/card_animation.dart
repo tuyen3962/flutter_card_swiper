@@ -14,6 +14,8 @@ class CardAnimation {
     this.isVerticalSwipingEnabled = true,
     this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
     this.onSwipeDirectionChanged,
+    this.updateOffsetHorizontal,
+    this.updateOffsetVertical,
   }) : scale = initialScale;
 
   final double maxAngle;
@@ -24,6 +26,8 @@ class CardAnimation {
   final bool isVerticalSwipingEnabled;
   final AllowedSwipeDirection allowedSwipeDirection;
   final ValueChanged<CardSwiperDirection>? onSwipeDirectionChanged;
+  final CardSwiperUpdateOffsetHorizontal? updateOffsetHorizontal;
+  final CardSwiperUpdateOffsetVertical? updateOffsetVertical;
 
   double left = 0;
   double top = 0;
@@ -39,11 +43,23 @@ class CardAnimation {
 
   double get _maxAngleInRadian => maxAngle * (math.pi / 180);
 
-  void sync() {
+  void sync(BuildContext context) {
     left = _leftAnimation.value;
     top = _topAnimation.value;
     scale = _scaleAnimation.value;
     difference = _differenceAnimation.value;
+    final size = MediaQuery.of(context).size;
+    final horizontalDiff = _getDiffWithActive(left / size.width);
+    final verticalDiff = _getDiffWithActive(top / size.height);
+    updateOffsetHorizontal?.call(horizontalDiff > .99 ? 0 : left / size.width);
+    updateOffsetVertical?.call(verticalDiff > .99 ? 0 : top / size.height);
+  }
+
+  double _getDiffWithActive(double diff) {
+    if (diff >= 0) {
+      return diff;
+    }
+    return diff * -1;
   }
 
   void reset() {
@@ -56,7 +72,12 @@ class CardAnimation {
     difference = Offset.zero;
   }
 
-  void update(double dx, double dy, bool inverseAngle) {
+  void update(
+    BoxConstraints constraints,
+    double dx,
+    double dy,
+    bool inverseAngle,
+  ) {
     if (allowedSwipeDirection.right && allowedSwipeDirection.left) {
       if (left > 0) {
         onSwipeDirectionChanged?.call(CardSwiperDirection.right);
@@ -99,6 +120,8 @@ class CardAnimation {
     updateAngle(inverseAngle);
     updateScale();
     updateDifference();
+    updateOffsetHorizontal?.call(left / constraints.maxWidth);
+    updateOffsetVertical?.call(top / constraints.maxHeight);
   }
 
   void updateAngle(bool inverse) {
