@@ -53,7 +53,7 @@ class CardAnimation {
     final verticalDiff = _getDiffWithActive(top / size.height);
     updateOffsetHorizontal?.call(horizontalDiff > .99 ? 0 : left / size.width);
     updateOffsetVertical?.call(verticalDiff > .99 ? 0 : top / size.height);
-    sync(false);
+    updateAngle(false);
   }
 
   double _getDiffWithActive(double diff) {
